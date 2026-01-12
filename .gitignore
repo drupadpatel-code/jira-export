@@ -31,3 +31,11 @@ Thumbs.db
 dist/
 build/
 *.egg-info/
+
+# Google Cloud SDK
+google-cloud-sdk/
+google-cloud-cli-*.tar.gz
+
+# Google Cloud SDK
+google-cloud-sdk/
+google-cloud-cli-*.tar.gz
