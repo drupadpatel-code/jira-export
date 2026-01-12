@@ -43,3 +43,7 @@ google-cloud-cli-*.tar.gz
 # Local SDK junk
 google-cloud-sdk/
 google-cloud-cli-*.tar.gz
+
+# Secrets
+.env
+application.yml
