@@ -1,7 +1,8 @@
 from flask import Flask, Response, request, jsonify
 from flask_cors import CORS
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+
 import csv
 import io
 import os
@@ -70,14 +71,26 @@ def get_sprint_issues(sprint_id):
 def parse_date(date_str):
     if not date_str:
         return None
+
     try:
-        return datetime.fromisoformat(date_str.replace("Z", "+00:00"))
+        # Normalize Jira timezone format
+        if date_str.endswith('Z'):
+            date_str = date_str.replace('Z', '+00:00')
+
+        dt = datetime.fromisoformat(date_str)
+
+        # Ensure timezone-aware
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+
+        return dt
     except Exception:
         return None
 
 
 def find_current_month_sprint(sprints):
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
+
     for sprint in sprints.get("values", []):
         start = parse_date(sprint.get("startDate"))
         end = parse_date(sprint.get("endDate"))
